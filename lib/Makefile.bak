@@ -1,0 +1,84 @@
+#
+# Makefile for generating object files/library from library files
+#
+
+OFLAGS = -O3
+SUPEROFLAGS = -fforce-mem -fforce-addr -fomit-frame-pointer -finline-functions \
+	-fcaller-saves -fno-function-cse -ffast-math
+CFLAGS = -D__SVGA__ -I/usr/include/g++-include -I/usr/local/include -I/home/kestrel/source/lib -c -funsigned-char\
+	$(OFLAGS) $(SUPEROFLAGS) $(DFLAGS)
+LDFLAGS = -L/home/kestrel/source/lib -lforge -lvga -lvgagl -lX11 -lXext
+#-lX11 -lXext
+#-D__DEBUG__
+
+.c.o:
+	gcc $(CFLAGS) $<
+
+.cc.o:
+	g++ $(CFLAGS) $<
+
+.S.o:
+	g++ -D__elf__ -g2 $< -c
+
+OBJS = general.o graphics.o keyboard.o virtual.o vblit.o mouse.o fixed.o fixeddiv.o mitshm.o 
+
+libforge.a: $(OBJS)
+	ar r libforge.a $(OBJS)
+
+tmp.o: tmp.cc
+	g++ $(CFLAGS) tmp.cc
+
+tmp: tmp.o $(OBJS)
+	g++ tmp.o -o tmp -L./ $(LDFLAGS)
+
+clean:
+	rm -f $(OBJS) libforge.a
+
+all:
+	make clean
+	make
+
+dep:
+	makedepend -I/usr/include/ -I/usr/lib/gcc-lib/i486-linux/2.7.0/include/ -I/usr/include/g++-include/ -I/home/kestrel/source/lib/ *.cc *.c
+# DO NOT DELETE
+
+fixed.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+fixed.o: /usr/include/sys/cdefs.h fixed8.h fixed.h
+general.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+general.o: /usr/include/sys/cdefs.h /usr/include/malloc.h
+general.o: /usr/include/features.h
+general.o: /usr/lib/gcc-lib/i486-linux/2.7.0/include/stddef.h
+general.o: /usr/include/string.h general.h
+graphics.o: /usr/include/string.h /usr/include/features.h
+graphics.o: /usr/include/sys/cdefs.h
+graphics.o: /usr/lib/gcc-lib/i486-linux/2.7.0/include/stddef.h
+graphics.o: /usr/include/stdlib.h /usr/include/errno.h
+graphics.o: /usr/include/linux/errno.h /usr/include/asm/errno.h
+graphics.o: /usr/include/alloca.h /usr/include/stdio.h /usr/include/libio.h
+graphics.o: /usr/include/_G_config.h graphics.h general.h
+keyboard.o: /usr/include/stdlib.h /usr/include/features.h
+keyboard.o: /usr/include/sys/cdefs.h
+keyboard.o: /usr/lib/gcc-lib/i486-linux/2.7.0/include/stddef.h
+keyboard.o: /usr/include/errno.h /usr/include/linux/errno.h
+keyboard.o: /usr/include/asm/errno.h /usr/include/alloca.h
+keyboard.o: /usr/include/string.h keyboard.h keymappings.h general.h
+mouse.o: /usr/include/string.h /usr/include/features.h
+mouse.o: /usr/include/sys/cdefs.h
+mouse.o: /usr/lib/gcc-lib/i486-linux/2.7.0/include/stddef.h
+mouse.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+mouse.o: general.h mouse.h
+tmp.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+tmp.o: /usr/include/sys/cdefs.h graphics.h virtual.h /usr/include/string.h
+tmp.o: /usr/include/features.h
+tmp.o: /usr/lib/gcc-lib/i486-linux/2.7.0/include/stddef.h general.h
+virtual.o: /usr/include/malloc.h /usr/include/features.h
+virtual.o: /usr/include/sys/cdefs.h
+virtual.o: /usr/lib/gcc-lib/i486-linux/2.7.0/include/stddef.h
+virtual.o: /usr/include/string.h virtual.h /usr/include/stdio.h
+virtual.o: /usr/include/libio.h /usr/include/_G_config.h graphics.h general.h
+virtual.old.o: /usr/include/malloc.h /usr/include/features.h
+virtual.old.o: /usr/include/sys/cdefs.h
+virtual.old.o: /usr/lib/gcc-lib/i486-linux/2.7.0/include/stddef.h
+virtual.old.o: /usr/include/string.h virtual.h /usr/include/stdio.h
+virtual.old.o: /usr/include/libio.h /usr/include/_G_config.h graphics.h
+virtual.old.o: general.h

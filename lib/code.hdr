@@ -1,0 +1,11 @@
+.386p
+;locals
+
+include data.hdr
+include data.ftr
+
+FIXEDSHIFT EQU 8
+
+DGROUP GROUP _DATA
+_TEXT           segment byte public use32 'CODE'
+assume  cs:_TEXT, ds:DGROUP

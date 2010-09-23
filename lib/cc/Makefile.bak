@@ -1,0 +1,108 @@
+# Optimization flags
+OFLAGS = -O3
+SUPEROFLAGS = -fforce-mem -fforce-addr -fomit-frame-pointer -finline-functions \
+	-fcaller-saves -fno-function-cse -ffast-math -funroll-all-loops
+CFLAGS = -D__X11__ -Wcomment -m486 -I/home/kestrel/Forge/lib -c -funsigned-char\
+	$(OFLAGS) $(SUPEROFLAGS) $(DFLAGS)
+# Debug flags
+#DFLAGS = -D__DEBUG__ 
+LDFLAGS = -L$(HOME)/Forge/lib -L/usr/X11/lib -lforge++ -lforge -lvga -lm -lX11 -lXext
+#-lvga -lvgagl
+
+# Project specific stuff
+OUTPUTFILE = ../libforge++.a
+LIBS = $(HOME)/Forge/lib/libforge.a
+MAIN = ../libforge++.a
+OBJS = video.o page.o font.o image.o colour.o mouse.o keyboard.o \
+	colourtable.o partialpage.o 
+
+# Compiler flags
+CC = g++ 
+LD = ld
+
+.cc.o:
+	$(CC) $(CFLAGS) $<
+
+.cc:
+	$(CC) $(CFLAGS) $<
+
+.o:
+	$(CC) $< $(LDFLAGS) -o $*
+
+$(OUTPUTFILE): $(OBJS) $(LIBS)
+	make link
+
+link:
+	ar r $(OUTPUTFILE) $(OBJS)
+
+tmp: tmp.o $(OBJS) $(OUTPUTFILE)
+
+all:
+	make clean
+	make
+
+clean: 
+	rm -f $(OBJS)
+
+dep:
+	makedepend -I/usr/include/ -I/usr/lib/gcc-lib/i486-linux/2.7.0/include/ -I/usr/include/g++-include/ -I/home/kestrel/Forge/lib/ *.cc
+# DO NOT DELETE
+
+colour.o: /home/kestrel/Forge/lib/fixed.h /usr/include/stdlib.h
+colour.o: /usr/include/features.h /usr/include/sys/cdefs.h
+colour.o: /usr/include/errno.h /usr/include/linux/errno.h
+colour.o: /usr/include/asm/errno.h /usr/include/alloca.h /usr/include/stdio.h
+colour.o: /usr/include/libio.h /usr/include/_G_config.h
+colour.o: /usr/include/g++-include/iostream.h
+colour.o: /usr/include/g++-include/streambuf.h colour.h video.h page.h
+colour.o: /usr/include/string.h font.h /home/kestrel/Forge/lib/cc/colour.h
+colourtable.o: /home/kestrel/Forge/lib/cc/colour.h
+font.o: /usr/include/g++-include/iostream.h
+font.o: /usr/include/g++-include/streambuf.h /usr/include/libio.h
+font.o: /usr/include/_G_config.h /usr/include/stdio.h
+font.o: /home/kestrel/Forge/lib/fixed.h /home/kestrel/Forge/lib/cc/page.h
+font.o: /usr/include/string.h /usr/include/features.h
+font.o: /usr/include/sys/cdefs.h colour.h /home/kestrel/Forge/lib/cc/image.h
+font.o: /home/kestrel/Forge/lib/cc/colour.h /home/kestrel/Forge/lib/cc/font.h
+image.o: /usr/include/g++-include/iostream.h
+image.o: /usr/include/g++-include/streambuf.h /usr/include/libio.h
+image.o: /usr/include/_G_config.h /usr/include/string.h
+image.o: /usr/include/features.h /usr/include/sys/cdefs.h
+image.o: /home/kestrel/Forge/lib/cc/page.h colour.h
+image.o: /home/kestrel/Forge/lib/fixed.h /home/kestrel/Forge/lib/cc/image.h
+image.o: /home/kestrel/Forge/lib/cc/colour.h /usr/include/stdio.h
+keyboard.o: /usr/include/g++-include/iostream.h
+keyboard.o: /usr/include/g++-include/streambuf.h /usr/include/libio.h
+keyboard.o: /usr/include/_G_config.h /usr/include/stdlib.h
+keyboard.o: /usr/include/features.h /usr/include/sys/cdefs.h
+keyboard.o: /usr/include/errno.h /usr/include/linux/errno.h
+keyboard.o: /usr/include/asm/errno.h /usr/include/alloca.h
+keyboard.o: /usr/include/string.h /home/kestrel/Forge/lib/cc/keyboard.h
+mouse.o: /usr/include/string.h /usr/include/features.h
+mouse.o: /usr/include/sys/cdefs.h /usr/include/stdio.h /usr/include/libio.h
+mouse.o: /usr/include/_G_config.h /home/kestrel/Forge/lib/general.h mouse.h
+page.o: /home/kestrel/Forge/lib/cc/colour.h /home/kestrel/Forge/lib/cc/page.h
+page.o: /usr/include/string.h /usr/include/features.h
+page.o: /usr/include/sys/cdefs.h colour.h /home/kestrel/Forge/lib/fixed.h
+page.o: /home/kestrel/Forge/lib/cc/image.h /usr/include/stdio.h
+page.o: /usr/include/libio.h /usr/include/_G_config.h
+page.o: /usr/include/g++-include/iostream.h
+page.o: /usr/include/g++-include/streambuf.h
+partialpage.o: /home/kestrel/Forge/lib/cc/partialpage.h
+partialpage.o: /home/kestrel/Forge/lib/cc/page.h /usr/include/string.h
+partialpage.o: /usr/include/features.h /usr/include/sys/cdefs.h colour.h
+partialpage.o: /home/kestrel/Forge/lib/fixed.h
+partialpage.o: /usr/include/g++-include/iostream.h
+partialpage.o: /usr/include/g++-include/streambuf.h /usr/include/libio.h
+partialpage.o: /usr/include/_G_config.h
+tmp.o: video.h page.h /usr/include/string.h /usr/include/features.h
+tmp.o: /usr/include/sys/cdefs.h colour.h /home/kestrel/Forge/lib/fixed.h
+tmp.o: mouse.h image.h /home/kestrel/Forge/lib/cc/colour.h
+tmp.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+video.o: /usr/include/string.h /usr/include/features.h
+video.o: /usr/include/sys/cdefs.h /usr/include/g++-include/iostream.h
+video.o: /usr/include/g++-include/streambuf.h /usr/include/libio.h
+video.o: /usr/include/_G_config.h /home/kestrel/Forge/lib/cc/font.h
+video.o: /usr/include/stdio.h /home/kestrel/Forge/lib/cc/colour.h
+video.o: /home/kestrel/Forge/lib/cc/video.h page.h colour.h
+video.o: /home/kestrel/Forge/lib/fixed.h

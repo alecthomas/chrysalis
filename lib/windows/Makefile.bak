@@ -1,0 +1,162 @@
+#
+# Makefile for generating object files/library from library files
+#
+
+OFLAGS = -O3
+SUPEROFLAGS = -fforce-mem -fforce-addr -fomit-frame-pointer -finline-functions \
+	-fcaller-saves -fno-function-cse -ffast-math -funroll-all-loops
+CFLAGS = -D__X11__ -Wcomment -m486 -I.. -c -funsigned-char\
+	$(OFLAGS) $(SUPEROFLAGS) $(DFLAGS)
+LDFLAGS = -L.. -L/usr/X11/lib -lforge++ -lforge -lm -lvga -lvgagl -lX11 -lXext
+OBJS = manager.o region.o window.o button.o raisedregion.o
+
+.S.o: 
+	g++ -c $(CFLAGS) $<
+
+.cc.o:
+	g++ -c $(CFLAGS) $<
+
+.o:
+	g++ $< $(LDFLAGS) -o $*
+
+
+../libforge++.a: $(OBJS)
+	ar r ../libforge++.a $(OBJS)
+
+all:
+	make clean
+	make
+
+tmp: tmp.o $(OBJS) ../libforge++.a
+	g++ tmp.o $(LDFLAGS) -o tmp
+
+clean:
+	rm -f $(OBJS)
+
+dep:
+	makedepend -I/usr/include/ -I/usr/include/g++/ -I/home/kestrel/source/lib/ *.cc
+# DO NOT DELETE
+
+button.o: /home/kestrel/source/lib/windows/window.h
+button.o: /home/kestrel/source/lib/windows/region.h
+button.o: /home/kestrel/source/lib/cc/page.h /usr/include/string.h
+button.o: /usr/include/features.h /usr/include/sys/cdefs.h
+button.o: /usr/lib/gcc-lib/i486-linux/2.7.2/include/stddef.h
+button.o: /home/kestrel/source/lib/cc/colour.h
+button.o: /home/kestrel/source/lib/fixed.h /home/kestrel/source/lib/cc/font.h
+button.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+button.o: /home/kestrel/source/lib/cc/colour.h
+button.o: /home/kestrel/source/lib/general.h /home/kestrel/source/lib/queue.h
+button.o: /home/kestrel/source/lib/windows/button.h
+button.o: /home/kestrel/source/lib/windows/manager.h
+button.o: /home/kestrel/source/lib/cc/video.h
+button.o: /home/kestrel/source/lib/cc/page.h
+button.o: /home/kestrel/source/lib/cc/mouse.h
+button.o: /home/kestrel/source/lib/cc/keyboard.h
+button.o: /home/kestrel/source/lib/cc/image.h
+button.o: /home/kestrel/source/lib/cc/partialpage.h
+button.o: /usr/include/g++/iostream.h /usr/include/g++/streambuf.h
+manager.o: /home/kestrel/source/lib/windows/manager.h
+manager.o: /home/kestrel/source/lib/windows/region.h
+manager.o: /home/kestrel/source/lib/cc/page.h /usr/include/string.h
+manager.o: /usr/include/features.h /usr/include/sys/cdefs.h
+manager.o: /usr/lib/gcc-lib/i486-linux/2.7.2/include/stddef.h
+manager.o: /home/kestrel/source/lib/cc/colour.h
+manager.o: /home/kestrel/source/lib/fixed.h
+manager.o: /home/kestrel/source/lib/cc/font.h /usr/include/stdio.h
+manager.o: /usr/include/libio.h /usr/include/_G_config.h
+manager.o: /home/kestrel/source/lib/cc/colour.h
+manager.o: /home/kestrel/source/lib/general.h
+manager.o: /home/kestrel/source/lib/queue.h
+manager.o: /home/kestrel/source/lib/cc/video.h
+manager.o: /home/kestrel/source/lib/cc/page.h
+manager.o: /home/kestrel/source/lib/cc/mouse.h
+manager.o: /home/kestrel/source/lib/cc/keyboard.h
+manager.o: /home/kestrel/source/lib/cc/image.h
+manager.o: /home/kestrel/source/lib/windows/button.h
+manager.o: /usr/include/g++/iostream.h /usr/include/g++/streambuf.h
+manager.o: /usr/include/stdlib.h /usr/include/errno.h
+manager.o: /usr/include/linux/errno.h /usr/include/asm/errno.h
+manager.o: /usr/include/alloca.h
+raisedregion.o: /home/kestrel/source/lib/windows/raisedregion.h
+raisedregion.o: /home/kestrel/source/lib/windows/region.h
+raisedregion.o: /home/kestrel/source/lib/cc/page.h /usr/include/string.h
+raisedregion.o: /usr/include/features.h /usr/include/sys/cdefs.h
+raisedregion.o: /usr/lib/gcc-lib/i486-linux/2.7.2/include/stddef.h
+raisedregion.o: /home/kestrel/source/lib/cc/colour.h
+raisedregion.o: /home/kestrel/source/lib/fixed.h
+raisedregion.o: /home/kestrel/source/lib/cc/font.h /usr/include/stdio.h
+raisedregion.o: /usr/include/libio.h /usr/include/_G_config.h
+raisedregion.o: /home/kestrel/source/lib/cc/colour.h
+raisedregion.o: /home/kestrel/source/lib/general.h
+raisedregion.o: /home/kestrel/source/lib/queue.h
+raisedregion.o: /home/kestrel/source/lib/windows/window.h
+raisedregion.o: /home/kestrel/source/lib/windows/button.h
+raisedregion.o: /home/kestrel/source/lib/cc/partialpage.h
+region.o: /home/kestrel/source/lib/windows/region.h
+region.o: /home/kestrel/source/lib/cc/page.h /usr/include/string.h
+region.o: /usr/include/features.h /usr/include/sys/cdefs.h
+region.o: /usr/lib/gcc-lib/i486-linux/2.7.2/include/stddef.h
+region.o: /home/kestrel/source/lib/cc/colour.h
+region.o: /home/kestrel/source/lib/fixed.h /home/kestrel/source/lib/cc/font.h
+region.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+region.o: /home/kestrel/source/lib/cc/colour.h
+region.o: /home/kestrel/source/lib/general.h /home/kestrel/source/lib/queue.h
+region.o: /home/kestrel/source/lib/windows/manager.h
+region.o: /home/kestrel/source/lib/cc/video.h
+region.o: /home/kestrel/source/lib/cc/page.h
+region.o: /home/kestrel/source/lib/cc/mouse.h
+region.o: /home/kestrel/source/lib/cc/keyboard.h
+region.o: /home/kestrel/source/lib/cc/image.h /usr/include/g++/iostream.h
+region.o: /usr/include/g++/streambuf.h
+scrollbar.o: /home/kestrel/source/lib/windows/window.h
+scrollbar.o: /home/kestrel/source/lib/windows/region.h
+scrollbar.o: /home/kestrel/source/lib/cc/page.h /usr/include/string.h
+scrollbar.o: /usr/include/features.h /usr/include/sys/cdefs.h
+scrollbar.o: /usr/lib/gcc-lib/i486-linux/2.7.2/include/stddef.h
+scrollbar.o: /home/kestrel/source/lib/cc/colour.h
+scrollbar.o: /home/kestrel/source/lib/fixed.h
+scrollbar.o: /home/kestrel/source/lib/cc/font.h /usr/include/stdio.h
+scrollbar.o: /usr/include/libio.h /usr/include/_G_config.h
+scrollbar.o: /home/kestrel/source/lib/cc/colour.h
+scrollbar.o: /home/kestrel/source/lib/general.h
+scrollbar.o: /home/kestrel/source/lib/queue.h
+scrollbar.o: /home/kestrel/source/lib/windows/button.h
+scrollbar.o: /home/kestrel/source/lib/windows/scrollbar.h
+scrollbar.o: /home/kestrel/source/lib/cc/image.h
+tmp.o: /home/kestrel/source/lib/windows/manager.h
+tmp.o: /home/kestrel/source/lib/windows/region.h
+tmp.o: /home/kestrel/source/lib/cc/page.h /usr/include/string.h
+tmp.o: /usr/include/features.h /usr/include/sys/cdefs.h
+tmp.o: /usr/lib/gcc-lib/i486-linux/2.7.2/include/stddef.h
+tmp.o: /home/kestrel/source/lib/cc/colour.h /home/kestrel/source/lib/fixed.h
+tmp.o: /home/kestrel/source/lib/cc/font.h /usr/include/stdio.h
+tmp.o: /usr/include/libio.h /usr/include/_G_config.h
+tmp.o: /home/kestrel/source/lib/cc/colour.h
+tmp.o: /home/kestrel/source/lib/general.h /home/kestrel/source/lib/queue.h
+tmp.o: /home/kestrel/source/lib/cc/video.h /home/kestrel/source/lib/cc/page.h
+tmp.o: /home/kestrel/source/lib/cc/mouse.h
+tmp.o: /home/kestrel/source/lib/cc/keyboard.h
+tmp.o: /home/kestrel/source/lib/cc/image.h
+tmp.o: /home/kestrel/source/lib/windows/window.h
+tmp.o: /home/kestrel/source/lib/windows/button.h
+tmp.o: /home/kestrel/source/lib/windows/raisedregion.h
+tmp.o: /usr/include/g++/iostream.h /usr/include/g++/streambuf.h
+window.o: /home/kestrel/source/lib/windows/window.h
+window.o: /home/kestrel/source/lib/windows/region.h
+window.o: /home/kestrel/source/lib/cc/page.h /usr/include/string.h
+window.o: /usr/include/features.h /usr/include/sys/cdefs.h
+window.o: /usr/lib/gcc-lib/i486-linux/2.7.2/include/stddef.h
+window.o: /home/kestrel/source/lib/cc/colour.h
+window.o: /home/kestrel/source/lib/fixed.h /home/kestrel/source/lib/cc/font.h
+window.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+window.o: /home/kestrel/source/lib/cc/colour.h
+window.o: /home/kestrel/source/lib/general.h /home/kestrel/source/lib/queue.h
+window.o: /home/kestrel/source/lib/windows/button.h
+window.o: /home/kestrel/source/lib/windows/manager.h
+window.o: /home/kestrel/source/lib/cc/video.h
+window.o: /home/kestrel/source/lib/cc/page.h
+window.o: /home/kestrel/source/lib/cc/mouse.h
+window.o: /home/kestrel/source/lib/cc/keyboard.h
+window.o: /home/kestrel/source/lib/cc/image.h /usr/include/g++/iostream.h
+window.o: /usr/include/g++/streambuf.h

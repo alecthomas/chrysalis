@@ -2,10 +2,10 @@
 #					Makefile for Linux Chrysalis ver 0.0.1
 #
 
-CFLAGS = -Wno-deprecated -D__X11__ -Wcomment -march=athlon-tbird -I../lib -c -funsigned-char -D__DEBUG__ -O3
+CFLAGS = -Wno-deprecated -D__X11__ -Wcomment -march=athlon-tbird -Ilib -c -funsigned-char -D__DEBUG__ -O3
 OFLAGS = -O3 -fforce-mem -fforce-addr -fomit-frame-pointer -finline-functions \
 	-fcaller-saves -fno-function-cse -ffast-math -funroll-all-loops
-LINKFLAGS = -L../lib -L/usr/X11R6/lib -lforge -lX11 -lXext
+LINKFLAGS = -Llib -L/usr/X11R6/lib -lforge -lX11 -lXext
 OBJS = layer.o init.o lib.o creature.o player.o world.o image.o assembler.o \
 	monsters.o object.o scenery.o morph.o alloc.o event.o
 EDITOROBJS = editor.o editwin.o
@@ -17,10 +17,10 @@ GAMEOBJS = play.o
 .S.o:
 	g++ $(CFLAGS) $(OFLAGS) $<
 
-Chrysalis: $(GAMEOBJS) $(OBJS) ../lib/libforge.a
+Chrysalis: $(GAMEOBJS) $(OBJS) lib/libforge.a
 	make link
 
-Editor: $(EDITOROBJS) $(OBJS) ../lib/libforge.a
+Editor: $(EDITOROBJS) $(OBJS) lib/libforge.a
 	make elink
 
 link:
