@@ -92,7 +92,7 @@ class fixed8 {
 				( (int)( ( num - (int)num ) * 256 ) );
 		}
 		inline fixed8( fixed8 const &v ) { number = v.number; }
-		inline fixed8( int i, char *dummy ) { (void)dummy; number = i; }
+		inline fixed8( int i, const char *dummy ) { (void)dummy; number = i; }
 		inline ~fixed8() {}
 		inline int integer() const {
 			return number < 0 ? -( (-number) >> FIXED8_SHIFT_SIZE ) : 

@@ -5,9 +5,12 @@
 
 #define  GETCH()  { while ( !keypressed ); keypressed = 0; }
 
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 #include <stdlib.h>
+
+using std::cout;
+using std::endl;
 
 #ifdef __WATCOMC__
 #include <dos.h>

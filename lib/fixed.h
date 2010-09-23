@@ -95,7 +95,7 @@ class fixed {
 				((int)((num - n) * 65536.0));
 		}
 		inline fixed(fixed const &v) { number = v.number; }
-		inline fixed(int i, char *dummy) { (void)dummy; number = i; }
+		inline fixed(int i, const char *dummy) { (void)dummy; number = i; }
 		inline ~fixed() {}
 		inline int integer() const { 
 			return number < 0 ? -((-number) >> FIXED_SHIFT_SIZE) : 

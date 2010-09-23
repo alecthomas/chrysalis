@@ -188,7 +188,7 @@ int l, l1, l2;
   return TRUE;
 }
 
-void V_print( int x, int y, char *text, int mode )
+void V_print( int x, int y, const char *text, int mode )
 {
   if ( mode == OUTLINE )
     while ( text[ 0 ] )
@@ -210,7 +210,7 @@ void V_print( int x, int y, char *text, int mode )
     }
 }
 
-int V_textwidth( char *text )
+int V_textwidth( const char *text )
 {
 int t, w = 0;
 

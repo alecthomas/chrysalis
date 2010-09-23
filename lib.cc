@@ -8,7 +8,7 @@
 
 
 #include "include.h"
-#include <iostream.h>
+#include <iostream>
 
 #include <general.h>
 #include <graphics.h>

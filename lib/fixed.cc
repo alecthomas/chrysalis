@@ -1,7 +1,12 @@
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 #include "fixed8.h"
 #include "fixed.h"
+
+
+using std::ostream;
+using std::istream;
+
 
 int fixed8::costable[] = {
   256, 255, 255, 255, 255, 255, 255, 255, 

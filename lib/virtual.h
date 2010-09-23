@@ -99,14 +99,14 @@ char *V_get( int &x, int &y, int w, int h );
   function: returns the width of the text, using the current font
       date:  31 Aug '94
 *******************************************************************************/
-int V_textwidth( char *text );
+int V_textwidth( const char *text );
 
 /*******************************************************************************
       name: V_PRINT
   function: print the current font
       date:  31 Aug '94
 *******************************************************************************/
-void V_print( int x, int y, char *text, int mode );
+void V_print( int x, int y, const char *text, int mode );
 
 /*******************************************************************************
       name: V_COPYBOX
@@ -204,10 +204,10 @@ inline void V_showpage()
 // External assembley routines
 extern "C" {
 #ifdef __WATCOMC__
-  void _cdecl V_blit( char *source, char *target, unsigned len, unsigned mode );
+  void _cdecl V_blit( const char *source, char *target, unsigned len, unsigned mode );
 #endif
 #ifdef __linux__
-  void V_blit( char *source, char *target, unsigned len, unsigned mode );
+  void V_blit( const char *source, char *target, unsigned len, unsigned mode );
 #endif
 }
 

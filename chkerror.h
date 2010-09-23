@@ -1,7 +1,7 @@
 #ifndef __CHKERROR_H__
 #define __CHKERROR_H__
 
-inline void CHECK( int tf, char *msg )
+inline void CHECK( int tf, const char *msg )
 {
 	if ( tf )
 	{
@@ -11,7 +11,7 @@ inline void CHECK( int tf, char *msg )
 	}
 }
 
-inline void _CHECK( int tf, char *msg )
+inline void _CHECK( int tf, const char *msg )
 {
 	if ( tf )
 	{
