@@ -1,4 +1,4 @@
-### Chrysalis - Source to a 2D Platformer from 1994 ###
+# Chrysalis - Source to a 2D Platformer from 1994 #
 
 [Chrysalis](http://github.com/alecthomas/chrysalis) is a game a friend (Eric Sambach) and I wrote in 1994, just out of high school.
 
