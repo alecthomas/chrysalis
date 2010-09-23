@@ -1,0 +1,203 @@
+#
+#					Makefile for Linux Chrysalis ver 0.0.1
+#
+
+CFLAGS = -D__X11__ -Wcomment -m486 -I../lib -c -funsigned-char -D__DEBUG__ -O3
+OFLAGS = -O3 -fforce-mem -fforce-addr -fomit-frame-pointer -finline-functions \
+	-fcaller-saves -fno-function-cse -ffast-math -funroll-all-loops
+LINKFLAGS = -L../lib -L/usr/X11R6/lib -lforge -lX11 -lXext
+OBJS = layer.o init.o lib.o creature.o player.o world.o image.o assembler.o \
+	monsters.o object.o scenery.o morph.o alloc.o event.o
+EDITOROBJS = editor.o editwin.o
+GAMEOBJS = play.o
+
+.cc.o:
+	g++ $(CFLAGS) $(OFLAGS) $<
+
+.S.o:
+	g++ $(CFLAGS) $(OFLAGS) $<
+
+Chrysalis: $(GAMEOBJS) $(OBJS) ../lib/libforge.a
+	make link
+
+Editor: $(EDITOROBJS) $(OBJS) ../lib/libforge.a
+	make elink
+
+link:
+	g++ $(GAMEOBJS) $(OBJS) -o Chrysalis $(LINKFLAGS) 
+
+elink:
+	g++ $(EDITOROBJS) $(OBJS) -o Editor $(LINKFLAGS)
+	
+all:
+	make
+	make Editor
+
+clean: 
+	rm -f $(OBJS) $(EDITOROBJS) $(GAMEOBJS) Chrysalis Editor
+
+dep:
+	makedepend -I/usr/lib/gcc-lib/i486-linux/2.6.3/include -I/usr/g++include -I/usr/include/g++ -I../lib *.cc
+# DO NOT DELETE
+
+alloc.o: include.h /usr/include/string.h /usr/include/features.h
+alloc.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+alloc.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+alloc.o: /usr/include/stdlib.h chkerror.h data.h /usr/include/malloc.h
+chkerror.o: /usr/include/stdio.h /usr/include/features.h
+chkerror.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+chkerror.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+chkerror.o: /usr/include/bits/types.h /usr/include/libio.h
+chkerror.o: /usr/include/_G_config.h /usr/include/wchar.h
+chkerror.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+chkerror.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+chkerror.o: /usr/include/bits/stdio_lim.h /usr/include/time.h
+chkerror.o: /usr/include/bits/time.h
+creature.o: include.h /usr/include/string.h /usr/include/features.h
+creature.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+creature.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+creature.o: /usr/include/stdlib.h chkerror.h creature.h object.h
+creature.o: /usr/include/stdio.h /usr/include/bits/types.h
+creature.o: /usr/include/libio.h /usr/include/_G_config.h
+creature.o: /usr/include/wchar.h /usr/include/bits/wchar.h
+creature.o: /usr/include/gconv.h
+creature.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+creature.o: /usr/include/bits/stdio_lim.h image.h lib.h queue.h player.h
+creature.o: morph.h
+editor.o: /usr/include/signal.h /usr/include/features.h
+editor.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+editor.o: /usr/include/bits/sigset.h /usr/include/bits/types.h
+editor.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+editor.o: /usr/include/bits/signum.h /usr/include/unistd.h
+editor.o: /usr/include/bits/posix_opt.h /usr/include/bits/confname.h
+editor.o: include.h /usr/include/string.h /usr/include/stdlib.h chkerror.h
+editor.o: editwin.h object.h /usr/include/stdio.h /usr/include/libio.h
+editor.o: /usr/include/_G_config.h /usr/include/wchar.h
+editor.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+editor.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+editor.o: /usr/include/bits/stdio_lim.h image.h lib.h queue.h editor.h data.h
+editor.o: world.h layer.h event.h
+editwin.o: include.h /usr/include/string.h /usr/include/features.h
+editwin.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+editwin.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+editwin.o: /usr/include/stdlib.h chkerror.h data.h editwin.h object.h
+editwin.o: /usr/include/stdio.h /usr/include/bits/types.h
+editwin.o: /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h
+editwin.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+editwin.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+editwin.o: /usr/include/bits/stdio_lim.h image.h lib.h queue.h editor.h
+editwin.o: world.h layer.h event.h
+event.o: include.h /usr/include/string.h /usr/include/features.h
+event.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+event.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+event.o: /usr/include/stdlib.h chkerror.h event.h queue.h creature.h object.h
+event.o: /usr/include/stdio.h /usr/include/bits/types.h /usr/include/libio.h
+event.o: /usr/include/_G_config.h /usr/include/wchar.h
+event.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+event.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+event.o: /usr/include/bits/stdio_lim.h image.h lib.h world.h layer.h
+image.o: include.h /usr/include/string.h /usr/include/features.h
+image.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+image.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+image.o: /usr/include/stdlib.h chkerror.h /usr/include/malloc.h image.h lib.h
+image.o: /usr/include/stdio.h /usr/include/bits/types.h /usr/include/libio.h
+image.o: /usr/include/_G_config.h /usr/include/wchar.h
+image.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+image.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+image.o: /usr/include/bits/stdio_lim.h queue.h
+init.o: include.h /usr/include/string.h /usr/include/features.h
+init.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+init.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+init.o: /usr/include/stdlib.h chkerror.h /usr/include/signal.h
+init.o: /usr/include/bits/sigset.h /usr/include/bits/types.h
+init.o: /usr/include/bits/signum.h object.h /usr/include/stdio.h
+init.o: /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h
+init.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+init.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+init.o: /usr/include/bits/stdio_lim.h image.h lib.h queue.h world.h layer.h
+init.o: data.h
+layer.o: include.h /usr/include/string.h /usr/include/features.h
+layer.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+layer.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+layer.o: /usr/include/stdlib.h chkerror.h world.h /usr/include/stdio.h
+layer.o: /usr/include/bits/types.h /usr/include/libio.h
+layer.o: /usr/include/_G_config.h /usr/include/wchar.h
+layer.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+layer.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+layer.o: /usr/include/bits/stdio_lim.h queue.h lib.h layer.h object.h image.h
+layer.o: monsters.h creature.h data.h scenery.h player.h morph.h
+lib.o: include.h /usr/include/string.h /usr/include/features.h
+lib.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+lib.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+lib.o: /usr/include/stdlib.h chkerror.h lib.h /usr/include/stdio.h
+lib.o: /usr/include/bits/types.h /usr/include/libio.h
+lib.o: /usr/include/_G_config.h /usr/include/wchar.h
+lib.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+lib.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+lib.o: /usr/include/bits/stdio_lim.h
+monsters.o: include.h /usr/include/string.h /usr/include/features.h
+monsters.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+monsters.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+monsters.o: /usr/include/stdlib.h chkerror.h creature.h object.h
+monsters.o: /usr/include/stdio.h /usr/include/bits/types.h
+monsters.o: /usr/include/libio.h /usr/include/_G_config.h
+monsters.o: /usr/include/wchar.h /usr/include/bits/wchar.h
+monsters.o: /usr/include/gconv.h
+monsters.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+monsters.o: /usr/include/bits/stdio_lim.h image.h lib.h queue.h monsters.h
+monsters.o: data.h world.h layer.h player.h morph.h
+morph.o: include.h /usr/include/string.h /usr/include/features.h
+morph.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+morph.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+morph.o: /usr/include/stdlib.h chkerror.h morph.h
+object.o: include.h /usr/include/string.h /usr/include/features.h
+object.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+object.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+object.o: /usr/include/stdlib.h chkerror.h object.h /usr/include/stdio.h
+object.o: /usr/include/bits/types.h /usr/include/libio.h
+object.o: /usr/include/_G_config.h /usr/include/wchar.h
+object.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+object.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+object.o: /usr/include/bits/stdio_lim.h image.h lib.h queue.h world.h layer.h
+play.o: /usr/include/unistd.h /usr/include/features.h
+play.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+play.o: /usr/include/bits/posix_opt.h /usr/include/bits/types.h
+play.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+play.o: /usr/include/bits/confname.h include.h /usr/include/string.h
+play.o: /usr/include/stdlib.h chkerror.h world.h /usr/include/stdio.h
+play.o: /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h
+play.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+play.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+play.o: /usr/include/bits/stdio_lim.h queue.h lib.h layer.h object.h image.h
+play.o: monsters.h creature.h data.h player.h morph.h
+player.o: include.h /usr/include/string.h /usr/include/features.h
+player.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+player.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+player.o: /usr/include/stdlib.h chkerror.h world.h /usr/include/stdio.h
+player.o: /usr/include/bits/types.h /usr/include/libio.h
+player.o: /usr/include/_G_config.h /usr/include/wchar.h
+player.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+player.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+player.o: /usr/include/bits/stdio_lim.h queue.h lib.h layer.h object.h
+player.o: image.h data.h player.h creature.h morph.h monsters.h
+scenery.o: include.h /usr/include/string.h /usr/include/features.h
+scenery.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+scenery.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+scenery.o: /usr/include/stdlib.h chkerror.h scenery.h /usr/include/stdio.h
+scenery.o: /usr/include/bits/types.h /usr/include/libio.h
+scenery.o: /usr/include/_G_config.h /usr/include/wchar.h
+scenery.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+scenery.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+scenery.o: /usr/include/bits/stdio_lim.h object.h image.h lib.h queue.h
+scenery.o: world.h layer.h
+world.o: include.h /usr/include/string.h /usr/include/features.h
+world.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+world.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stddef.h
+world.o: /usr/include/stdlib.h chkerror.h /usr/include/unistd.h
+world.o: /usr/include/bits/posix_opt.h /usr/include/bits/types.h
+world.o: /usr/include/bits/confname.h data.h world.h /usr/include/stdio.h
+world.o: /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h
+world.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+world.o: /usr/lib/gcc-lib/i686-pc-linux-gnu/2.95.3/include/stdarg.h
+world.o: /usr/include/bits/stdio_lim.h queue.h lib.h layer.h object.h image.h
+world.o: player.h creature.h morph.h monsters.h scenery.h

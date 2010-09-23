@@ -1,0 +1,11 @@
+tail +4 $0 | more
+exit
+# This is where all the interesting stuff starts
+- make circle/line routines for the editor....DONE! :)
+- maybe, make each object have a pointer to an event???
+  it's either that, or make each event have a list of objects
+  /me dunno which is a better idea
+- i don't think i'll have each object point to events....for one thing,
+  that would mean i couldn't have one object linked to two events...bad!
+- in the editor, the user needs to be able to create object lists, vectors,
+  type in number(s), etc.....this will be fun (not!)

@@ -1,0 +1,6 @@
+sync
+if [ ! -f ../Chrysalis ]; then
+	echo error: main Chrysalis binary not found
+	exit
+fi
+../Chrysalis $*
