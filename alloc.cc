@@ -1,8 +1,12 @@
 #include "include.h"
 #include "data.h"
-#include <malloc.h>
+#include <stdlib.h>
 
 #define MEMORY_SIGNATURE 	0x89abcdef
+// Space reserved before each allocation for the signature. It must be a
+// multiple of the platform's maximum alignment so that returned pointers stay
+// suitably aligned.
+#define MEMORY_HEADER		16
 
 void checkheap()
 {
@@ -20,14 +24,27 @@ void checkheap()
 #endif
 }
 
-void *operator new( unsigned int mem )
+static void *allocate( size_t mem, const char *negative )
 {
-void *tmp;
+char *tmp;
 
-	CHECK( (int)mem < 0, "attempt to allocate negatively sized pointer" );
-	CHECK( ( tmp = malloc( mem + 4 ) ) == NULL, "out of memory" );
-	((unsigned int*)tmp)[ 0 ] = MEMORY_SIGNATURE;
-	return (char*)tmp + 4;
+	CHECK( (long)mem < 0, negative );
+	CHECK( ( tmp = (char*)malloc( mem + MEMORY_HEADER ) ) == NULL, "out of memory" );
+	tmp += MEMORY_HEADER;
+	((unsigned int*)tmp)[ -1 ] = MEMORY_SIGNATURE;
+	return tmp;
+}
+
+static void release( void *mem, const char *corrupt )
+{
+	if ( mem == NULL ) return;
+	CHECK( ((unsigned int*)mem)[ -1 ] != MEMORY_SIGNATURE, corrupt );
+	free( (char*)mem - MEMORY_HEADER );
+}
+
+void *operator new( size_t mem )
+{
+	return allocate( mem, "attempt to allocate negatively sized pointer" );
 }
 
 //void *operator new( unsigned int mem, void *ptr )
@@ -40,14 +57,9 @@ void *tmp;
 //	return (char*)tmp + 4;
 //}
 
-void *operator new []( unsigned int mem )
+void *operator new []( size_t mem )
 {
-void *tmp;
-
-	CHECK( (int)mem < 0, "attempt to allocate negatively sized array" );
-	CHECK( ( tmp = malloc( mem + 4 ) ) == NULL, "out of memory" );
-	((unsigned int*)tmp)[ 0 ] = MEMORY_SIGNATURE;
-	return (char*)tmp + 4;
+	return allocate( mem, "attempt to allocate negatively sized array" );
 }
 
 //void *operator new []( unsigned int mem, void *ptr )
@@ -60,14 +72,23 @@ void *tmp;
 //	return (char*)tmp + 4;
 //}
 
-void operator delete( void *mem )
+void operator delete( void *mem ) noexcept
 {
-	CHECK( ((unsigned int*)mem)[ -1 ] != MEMORY_SIGNATURE, "memory signature corruption detected on pointer deletion" );
-	free( (char*)mem - 4 );
+	release( mem, "memory signature corruption detected on pointer deletion" );
 }
 
-void operator delete []( void *mem )
+void operator delete []( void *mem ) noexcept
 {
-	CHECK( ((unsigned int*)mem)[ -1 ] != MEMORY_SIGNATURE, "memory signature corruption detected on array deletion" );
-	free( (char*)mem - 4 );
+	release( mem, "memory signature corruption detected on array deletion" );
+}
+
+// Modern compilers call the sized forms, which must also use this allocator.
+void operator delete( void *mem, size_t ) noexcept
+{
+	release( mem, "memory signature corruption detected on pointer deletion" );
+}
+
+void operator delete []( void *mem, size_t ) noexcept
+{
+	release( mem, "memory signature corruption detected on array deletion" );
 }

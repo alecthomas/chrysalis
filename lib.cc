@@ -132,14 +132,14 @@ int pos, sig, s;
 	strcpy( l.name, filename );
 	l.io = io;
 	l.length = len;
-	l.offset = sizeof( LIBLIST );
+	l.offset = LIB_HEADERSIZE;
 	if ( ( s = seek( filename ) ) == -1 )
 	{ // append new entry
 		fseek( io, 0, SEEK_END );
 		l.offset += ftell( io );
 	} else
 	{ // overwrite existing entry
-		fseek( io, -sizeof( LIBLIST ), SEEK_CUR );
+		fseek( io, -LIB_HEADERSIZE, SEEK_CUR );
 		existinglib = lib->examine( s );
 		l.offset += ftell( io );
 		if ( existinglib->length > len )
@@ -148,7 +148,7 @@ int pos, sig, s;
 	if ( !_insert_( &l ) ) return FALSE;
 	sig = LIB_SIGNATURE;
 	fwrite( &sig, 4, 1, io );
-	fwrite( &l, 1, sizeof( LIBLIST ) - 4, io );
+	fwrite( &l, 1, LIB_HEADERSIZE - 4, io );
 	fwrite( buffer, 1, l.length, io );
 	return TRUE;
 }
@@ -249,7 +249,7 @@ int sig, startentries = entries, oldlen = 0, newlen;
 			fclose( io );
 			return FALSE;
 		}
-		if ( fread( &tl, 1, sizeof( LIBLIST ) - 4, io ) != sizeof( LIBLIST ) - 4 ) break;
+		if ( fread( &tl, 1, LIB_HEADERSIZE - 4, io ) != LIB_HEADERSIZE - 4 ) break;
 		tl.io = io;
 		if ( !_insert_( &tl ) )
 		{

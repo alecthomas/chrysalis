@@ -9,10 +9,10 @@
 #ifdef __SVGA__
 #include <vgakeyboard.h>
 #endif
-
-#ifdef __X11__
-#include "mitshm.h"
 #endif
+
+#if defined( __X11__ ) || defined( __SDL__ )
+#include "mitshm.h"
 #endif
 
 extern volatile char
@@ -55,7 +55,7 @@ inline char K_count()
 }
 #endif
 
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 inline char K_index( int index )
 {
 	updateKeyboard();

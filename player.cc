@@ -66,7 +66,6 @@ void PLAYER::go()
 	{
 		if ( !morph->go() )
 		{ // finished morphing
-			delete morph;
 			world->playlayer->creatureQ->remove( this );
 			world->player = selectedshape = targetshape;
 			if ( morph->getw() > targetshape->getw() )
@@ -77,6 +76,7 @@ void PLAYER::go()
 				y += ( morph->geth() - targetshape->geth() ) / 2;
 			else
 				y -= ( morph->geth() - targetshape->geth() ) / 2;
+			delete morph;
 			world->player->setposition( x, y );
 			world->playlayer->creatureQ->insert( priority, world->player );
 			world->playlayer->creatureQ->prev();
@@ -137,8 +137,8 @@ void PLAYER::display( int xadj )
 			image->put( x - xadj, y, id, frame, TRANSLUCENT );
 }
 
-#ifdef __linux__
-extern "C" int PLAYER_copy_reversed_image( char *source, char *target );
+#ifndef __WATCOMC__
+extern "C" void PLAYER_copy_reversed_image( char *source, char *target );
 #endif
 
 #ifdef __WATCOMC__

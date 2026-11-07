@@ -32,7 +32,7 @@ int l;
 	event = new QUEUE <EVENT>();
 	
 	// Allocate page
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 	page = V_VGAscreen;
 #else
 	page = V_createpage( WORLDWIDTH, WORLDHEIGHT );

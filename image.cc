@@ -8,7 +8,7 @@
 *****************************************************************************/
 
 #include "include.h"
-#include <malloc.h>
+#include <stdlib.h>
 #include "image.h"
 #include "chkerror.h"
 
@@ -85,7 +85,7 @@ static int oldlen = 0, w[ 512 ], h[ 512 ];
 	lib->pop();
 }
 
-#ifdef __linux__
+#ifndef __WATCOMC__
 extern "C" int remove_accessed( int index, int *list, int entries );
 #endif
 

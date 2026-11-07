@@ -12,8 +12,7 @@
 #ifndef __FIXED_H__
 #define __FIXED_H__
 
-class ostream;
-class istream;
+#include <iosfwd>
 
 #pragma inline_recursion on
 
@@ -40,30 +39,16 @@ int __fixed_div(int a, int b);
 	value [eax]
 #endif
 
-#ifdef __linux__
+#ifndef __WATCOMC__
 
 inline int __fixed_mul(int left, int right)
 {
-	asm volatile (	
-		"imull %%edx\n"
-		"shrdl $16, %%edx, %%eax\n" 
-		: "=a" (left)
-		: "a" (left), "d" (right) 
-		);
-	return left;
+	return (int)(((long long)left * right) >> FIXED_SHIFT_SIZE);
 }
 
 inline int __fixed_div(int left, int right)
 {
-	asm volatile (	
-		"movl $0, %%eax\n"
-		"shrdl $16, %%edx, %%eax\n"
-		"sarl $16, %%edx\n"
-		"idivl %%ebx\n" 
-		: "=a" (left)
-		: "d" (left), "b" (right) 
-	);
-	return left;
+	return (int)(((long long)left << FIXED_SHIFT_SIZE) / right);
 }
 
 #endif
@@ -200,8 +185,8 @@ class fixed {
 		static int sintable[ 512 ], costable[ 512 ];
 };
 
-ostream &operator << (ostream &outfile, fixed const &f);
-istream &operator >> (istream &outfile, fixed const &f);
+std::ostream &operator << (std::ostream &outfile, fixed const &f);
+std::istream &operator >> (std::istream &outfile, fixed const &f);
 
 // Misc routines
 fixed sqrt(fixed number);

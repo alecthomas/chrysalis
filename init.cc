@@ -144,6 +144,8 @@ void detect_os()
 #endif
 }
 
+#define MEMORY_PROBE_LIMIT 64
+
 int detect_memory()
 /*  =================
 	Detect the amount of free memory and exit if there isn't enough (>= 4m)
@@ -152,7 +154,9 @@ int detect_memory()
 int l, l1;
 char *t;
 	
-	for ( l = 1; ; l++ )
+	// Bounded because modern allocators overcommit and compilers may elide the
+	// malloc/free pair, which made the unbounded probe an infinite loop.
+	for ( l = 1; l < MEMORY_PROBE_LIMIT; l++ )
 	{
 		if ( ( t = (char*)malloc( l * 1024 * 1024 ) ) == NULL )
 			break;

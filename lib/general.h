@@ -112,7 +112,7 @@ inline int touching( int x, int y, int x1, int y1, int w1, int h1 )
   return !( x > x1 + w1 - 1 || y > y1 + h1 - 1 || x < x1 || y < y1 );
 }
 
-#ifdef __GNUC__
+#if defined( __GNUC__ ) && defined( __i386__ )
 /* Fast SQRT algorithm, courtesy of Jare - uses table, slightly inaccurate */
 static inline float fsqrt( float a )
 {

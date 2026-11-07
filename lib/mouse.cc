@@ -3,15 +3,17 @@
 #endif
 
 #ifdef __linux__
-#include <stdlib.h>
 #ifdef __SVGA__
 #include <vga.h>
 #include <vgamouse.h>
 #endif
-#ifdef __X11__
+#endif
+
+#if defined( __X11__ ) || defined( __SDL__ )
 #include "mitshm.h"
 #endif
-#endif
+
+#include <stdlib.h>
 
 #include <string.h>
 #include <stdio.h>
@@ -60,6 +62,11 @@ int rv;
 	mouse_setyrange( 0, h );
 	return rv;
 #endif
+
+#if defined( __X11__ ) || defined( __SDL__ )
+	(void)w; (void)h;
+	return TRUE;
+#endif
 }
 
 void M_getposition( int &x, int &y )
@@ -80,7 +87,7 @@ union REGPACK rs;
 	y = mouse_gety();
 #endif
 
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 	static unsigned int dummy;
 	x = Xmousex; y = Xmousey;
 #endif
@@ -103,7 +110,7 @@ union REGPACK rs;
 	mouse_setposition( x, y );
 #endif
 
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 	setMouse( x, y );
 #endif
 }
@@ -132,7 +139,7 @@ int nb;
 	if ( nb & 1 ) b |= 2;
 #endif
 
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 	b = Xmousebuttons;
 #endif
 }

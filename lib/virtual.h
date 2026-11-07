@@ -5,7 +5,7 @@
 #include "graphics.h"
 #include "general.h"
 
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 #include "mitshm.h"
 #endif
 
@@ -196,7 +196,7 @@ inline void V_clearpage( char colour )
 inline void V_showpage()
 {
   if ( V_screen->ptr != G_screen ) memcpy( G_screen, V_screen->ptr, V_screen->w * V_screen->h );
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 	updateScreen();
 #endif
 }
@@ -205,8 +205,7 @@ inline void V_showpage()
 extern "C" {
 #ifdef __WATCOMC__
   void _cdecl V_blit( const char *source, char *target, unsigned len, unsigned mode );
-#endif
-#ifdef __linux__
+#else
   void V_blit( const char *source, char *target, unsigned len, unsigned mode );
 #endif
 }

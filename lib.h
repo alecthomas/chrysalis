@@ -12,6 +12,7 @@
 class LIB;
 
 #include <stdio.h>
+#include <stddef.h>
 
 #define LIB_SIGNATURE 0x5242494c
 #define LIB_MAXENTRIES	4096
@@ -22,6 +23,12 @@ typedef struct {
 		char name[ 64 ];
 	FILE *io;
 } LIBLIST;
+
+// Size of an entry header on disk: the signature followed by the LIBLIST
+// fields before io. This is not sizeof( LIBLIST ), because the size of the
+// io pointer depends on the platform, while the file format was written on
+// 32-bit systems.
+#define LIB_HEADERSIZE ( 4 + (int)offsetof( LIBLIST, io ) )
 
 typedef struct {
 	int offset;

@@ -3,7 +3,7 @@
 #include <malloc.h>
 #endif
 
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 #include "mitshm.h"
 #endif
 
@@ -95,7 +95,7 @@ void G_deinit( void )
 	memcpy( (char*)0xb0000, G_oldscreen, 65536 );
 	memcpy( (char*)0x450, G_cursorposition, 16 );
 #endif
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 	Xuninitialize();
 #endif
 #ifdef __SVGA__
@@ -135,7 +135,7 @@ int l;
 	}
 #endif
 
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 	Xinitialize( 320, 200 );
 	G_screen = shared_mem;
 	G_screenwidth = 320;
@@ -178,7 +178,7 @@ int G_setmode( int mode )
 	printf( "%ix%i\n", G_screenwidth, G_screenheight );
 	return TRUE;
 #endif
-#if defined( __WATCOMC__ ) || defined( __X11__ )
+#if defined( __WATCOMC__ ) || defined( __X11__ ) || defined( __SDL__ )
 	return FALSE;
 #endif
 }
@@ -250,7 +250,7 @@ void G_setfont( char **f )
 	font = f;
 }
 
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 void G_setpalette( int start, int finish, char *pal )
 {
 	for ( int l = 0; l != ( finish - start ) + 1; l++ )

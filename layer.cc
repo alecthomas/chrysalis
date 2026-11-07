@@ -119,7 +119,7 @@ void LAYER::reset()
 	V_restorepage();
 }
 
-#ifdef __linux__
+#ifndef __WATCOMC__
 extern "C" void __blit4__( char *targ, char *src, int len );
 #endif
 
@@ -600,6 +600,63 @@ SCENERY *LAYER::inserttemporaryscenery( int priority, SCENERY *scenery )
 	return scenery;
 }
 
+#define MAXSTEPUP 8
+#define MAXSTEPDOWN 2
+
+int LAYER::stepup( OBJECT *o )
+/* ============================
+	Lift a player-controlled object onto scenery it walked into, if the
+	scenery's top is at most MAXSTEPUP pixels above the object's feet and the
+	raised position is clear. Returns TRUE if the object was lifted.
+*/
+{
+OBJECT *s;
+int rise = 0, r;
+
+	if ( !o->attribute.possessed ) return FALSE;
+	for ( s = sceneryQ->reset(); s != NULL; s = sceneryQ->next() )
+		if ( s->attribute.solid && o->checkcollision( s ) )
+		{
+			r = o->y.integer() + o->geth() - s->gety().integer();
+			if ( r > MAXSTEPUP ) return FALSE;
+			if ( r > rise ) rise = r;
+		}
+	if ( rise <= 0 ) return FALSE;
+	o->y -= rise;
+	for ( s = sceneryQ->reset(); s != NULL; s = sceneryQ->next() )
+		if ( s->attribute.solid && o->checkcollision( s ) )
+		{
+			o->y += rise;
+			return FALSE;
+		}
+	return TRUE;
+}
+
+OBJECT *LAYER::stepdown( OBJECT *o )
+/* ==================================
+	Drop a player-controlled object that has moved down without landing onto
+	ground at most MAXSTEPDOWN pixels further below, so walking off a small step
+	doesn't count as falling. Returns the ground landed on, or NULL.
+*/
+{
+OBJECT *s;
+int l;
+
+	if ( !o->attribute.possessed ) return NULL;
+	for ( l = 0; l != MAXSTEPDOWN; l++ )
+	{
+		o->y++;
+		for ( s = sceneryQ->reset(); s != NULL; s = sceneryQ->next() )
+			if ( s->attribute.solid && o->checkcollision( s ) )
+			{
+				o->y--;
+				return s;
+			}
+	}
+	o->y -= MAXSTEPDOWN;
+	return NULL;
+}
+
 OBJECT *LAYER::updatexcollision( OBJECT *o )
 /* ==========================================
 	Move an object in XDIR, checking scenery collisions as it goes.
@@ -628,6 +685,7 @@ fixed x, xd = o->xdir;
 					}
 			s = sceneryQ->next();
 		}
+		if ( closest != NULL && stepup( o ) ) return NULL;
 		if ( closest != NULL )
 			do {
 				o->x++;
@@ -659,6 +717,7 @@ fixed x, xd = o->xdir;
 					}
 			s = sceneryQ->next();
 		}
+		if ( closest != NULL && stepup( o ) ) return NULL;
 		if ( closest != NULL )
 			do {
 				o->x--;
@@ -739,6 +798,7 @@ fixed y, yd = o->ydir;
 					}
 			s = sceneryQ->next();
 		}
+		if ( closest == NULL ) return stepdown( o );
 		if ( closest != NULL )
 			do {
 				o->y--;

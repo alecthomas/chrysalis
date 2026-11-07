@@ -193,7 +193,7 @@ void calc_vectors( MORPH::PIXEL *list, MORPH::PIXEL *source, MORPH::PIXEL *targe
 	modify [eax]
 #endif
 
-#ifdef __linux__
+#ifndef __WATCOMC__
 extern "C" {
 void calc_vectors( MORPH::PIXEL *list, MORPH::PIXEL *source, MORPH::PIXEL *target, MORPH::PIXEL *vector, int pixels );
 int count_pixels( char *image, int size );
@@ -204,6 +204,23 @@ void morph_points_from_white( MORPH::PIXEL *list, MORPH::PIXEL *list2, MORPH::PI
 void dump_points( MORPH::PIXEL *ms, char **ytable, int length );
 }
 #endif
+
+static void wrap_points( MORPH::PIXEL *list, int count, int total )
+/* ================================================================
+	Fill list[ count ] to list[ total - 1 ] by repeating the first count
+	points. The original did this with an overlapping memcpy, which only
+	repeated the points with a byte-by-byte forward copy.
+*/
+{
+int l;
+
+	if ( count == 0 )
+	{
+		memset( list, 0, total * sizeof( MORPH::PIXEL ) );
+		return;
+	}
+	for ( l = count; l < total; l++ ) list[ l ] = list[ l - count ];
+}
 
 MORPH::MORPH( char *source,  char *target )
 /* ==================================================
@@ -238,12 +255,10 @@ char *sp, *tp, colour, *msource, *mtarget;
     vector = new PIXEL[ pixels ];
     calc_points( spoint, msource, w, h );
     // propogate source points so they wrap at end
-    memcpy( &spoint[ sourcepixels ], spoint,
-        ( pixels - sourcepixels ) * sizeof( PIXEL ) );
+    wrap_points( spoint, sourcepixels, pixels );
     calc_points( tpoint, mtarget, w, h );
     // propogate target points so they wrap at end
-    memcpy( &tpoint[ targetpixels ], tpoint,
-        ( pixels - targetpixels ) * sizeof( PIXEL ) );
+    wrap_points( tpoint, targetpixels, pixels );
 	// calculate point vectors
 	calc_vectors( point, spoint, tpoint, vector, pixels );
     // create working images (scratch image)

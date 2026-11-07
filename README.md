@@ -42,6 +42,16 @@ The game itself used four-layer parallax scrolling. The play layer was the secon
 
 Entities in the game could be animated, such as the water and vines in creature.cc.
 
+## Building and Running ##
+
+The game now builds on modern systems, including Apple Silicon Macs, using SDL2:
+
+    brew install sdl2 pkg-config
+    make
+    cd run && ./Chrysalis
+
+Run `./Editor` from the same directory to start the level editor.
+
 ## Last Words ##
 
-If anybody has an old Linux machine lying around and can run the binaries (which are included on GitHub), I'd love a screenshot.
+If anybody has an old Linux machine lying around and can run the original binaries (which are in the git history), I'd love a screenshot.

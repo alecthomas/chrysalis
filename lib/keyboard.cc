@@ -177,7 +177,7 @@ void K_init( void (*userhandler)() )
 		ERROR( "could not init keyboard driver" );
 	keyboard_seteventhandler( K_handler );
 #endif
-#ifdef __X11__
+#if defined( __X11__ ) || defined( __SDL__ )
 	initKeyboard();
 	atexit( K_deinit );
 #endif

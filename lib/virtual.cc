@@ -1,4 +1,4 @@
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include "virtual.h"
 #include "graphics.h"
@@ -174,9 +174,7 @@ int l, l1, l2;
     l * V_screen->w;
   V_VGAscreen = V_screen;
 // generate shade table
-  TBL_shade = (char*)malloc( 32 * 256 + 65536);
-  TBL_shade += 65535;
-  l = (int)TBL_shade; l &= ~0xffff; TBL_shade = (char*)l; // make table 256 byte aligned
+  TBL_shade = (char*)malloc( 32 * 256 );
   for ( l = 0; l != 16; l++ )
     for ( l1 = 0; l1 != 16; l1++ )
       for ( l2 = 0; l2 != 32; l2++ )
@@ -225,11 +223,7 @@ int t, w = 0;
 
 void V_loadtranslucency( FILE *handle )
 {
-int l;
-
-	TBL_translucent = new char[ 65536 * 2 ];
-	// align buffer on 256 byte boundary
-	TBL_translucent += 65535; l = (int)TBL_translucent; l &= ~0xffff; TBL_translucent = (char*)l;
+	TBL_translucent = new char[ 65536 ];
 	fread( TBL_translucent, 65536, 1, handle );
 }
 

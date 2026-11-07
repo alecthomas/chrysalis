@@ -13,8 +13,7 @@
 #define __FIXED8_H__
 
 class fixed;
-class ostream;
-class istream;
+#include <iosfwd>
 
 #pragma inline_recursion on
 
@@ -41,30 +40,16 @@ int __fixed8_div( int a, int b );
 	value [eax]
 #endif
 
-#ifdef __linux__
+#ifndef __WATCOMC__
 
 inline int __fixed8_mul( int left, int right )
 {
-	asm volatile ( 	
-		"imull %%edx\n"
-		"shrdl $8, %%edx, %%eax\n" 
-		: "=a" (left)
-		: "a" (left), "d" (right) 
-		);
-	return left;
+	return (int)( ( (long long)left * right ) >> FIXED8_SHIFT_SIZE );
 }
 
 inline int __fixed8_div( int left, int right )
 {
-	asm volatile (	
-		"movl $0, %%eax\n"
-		"shrdl $24, %%edx, %%eax\n"
-		"sarl $24, %%edx\n"
-		"idivl %%ebx\n" 
-		: "=a" (left)
-		: "d" (left), "b" (right) 
-	);
-	return left;
+	return (int)( ( (long long)left << FIXED8_SHIFT_SIZE ) / right );
 }
 
 #endif
@@ -194,8 +179,8 @@ class fixed8 {
 		static int sintable[ 512 ], costable[ 512 ];
 };
 
-ostream &operator << ( ostream &outfile, fixed8 const &f );
-istream &operator >> ( istream &outfile, fixed8 const &f );
+std::ostream &operator << ( std::ostream &outfile, fixed8 const &f );
+std::istream &operator >> ( std::istream &outfile, fixed8 const &f );
 
 // Misc routines
 fixed8 sqrt( fixed8 number );

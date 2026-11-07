@@ -83,7 +83,7 @@ void parse( int &argument )
 	CHECK( TRUE, "argument got through to PLAY parser" );
 }
 
-#ifdef __linux__
+#ifndef __WATCOMC__
 extern "C" void translucentbox( char *ptr, int w, int h, int colour );
 #endif
 

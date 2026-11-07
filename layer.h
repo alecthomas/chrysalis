@@ -27,6 +27,8 @@ class LAYER {
 		SCENERY *inserttemporaryscenery( int priority, SCENERY *scenery );
 		OBJECT *checkscenerycollisions( OBJECT *creature );
 		OBJECT *checkcreaturecollisions( OBJECT *creature );
+		int stepup( OBJECT *o );
+		OBJECT *stepdown( OBJECT *o );
 		OBJECT *updatexcollision( OBJECT *o );
 		OBJECT *updateycollision( OBJECT *o );
 		void display();
